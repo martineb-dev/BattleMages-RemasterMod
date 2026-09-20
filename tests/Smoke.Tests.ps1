@@ -55,7 +55,11 @@ try {
 
     if ($env:OS -eq 'Windows_NT') {
         $junction = Join-Path $sandbox 'junction-to-source'
-        New-Item -ItemType Junction -Path $junction -Target $source | Out-Null
+        # Windows PowerShell 5.1 treats brackets in -Target as wildcards.
+        # Keep bracketed source coverage above and use a literal-safe link fixture here.
+        $junctionTarget = Join-Path $sandbox 'junction-target'
+        [void][IO.Directory]::CreateDirectory($junctionTarget)
+        New-Item -ItemType Junction -Path $junction -Target $junctionTarget | Out-Null
         Assert-Throws { Get-BMSafeFiles $junction } 'Junction root must be refused.'
         Assert-Throws { Assert-BMNoReparsePath (Join-Path $junction 'nonexistent') } 'Junction ancestor must be refused.'
         [IO.Directory]::Delete($junction)
@@ -66,4 +70,3 @@ try {
     if ($junction -and (Test-Path -LiteralPath $junction)) { [IO.Directory]::Delete($junction) }
     if (Test-Path -LiteralPath $sandbox) { Remove-Item -LiteralPath $sandbox -Recurse -Force }
 }
-
