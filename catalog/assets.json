@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "artProductionPaused": true,
+  "assets": [
+    {
+      "id": "humans/paladin",
+      "revision": "v6",
+      "visualStatus": "accepted",
+      "integrationStatus": "not-tested",
+      "enabledInBuild": false,
+      "checkpoint": "Paladin_Texture_v6.zip",
+      "checkpointSha256": "432d11cfa01dc80b799a4d7c6f24214d09cd22fe5f740427c487fa3664072d9f"
+    },
+    {
+      "id": "humans/swordsman",
+      "revision": "v1",
+      "visualStatus": "review",
+      "integrationStatus": "not-tested",
+      "enabledInBuild": false,
+      "checkpoint": "Swordsman_Before_After.zip",
+      "checkpointSha256": "64c51d9107ec1765797d0174894664e2cb4d2aef573053deb28df0a6666a2031"
+    },
+    {
+      "id": "special/player",
+      "revision": null,
+      "visualStatus": "identity-to-confirm",
+      "integrationStatus": "not-tested",
+      "enabledInBuild": false,
+      "checkpoint": null
+    }
+  ]
+}

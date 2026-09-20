@@ -1,0 +1,26 @@
+# Original game data and all machine-specific work stay outside Git.
+config/local.json
+.local/
+work/
+reports/
+builds/
+backups/
+game-test/
+originals/
+assets/
+*.gdp
+*.sam
+*.gsm
+*.dds
+*.mrk
+*.exe
+*.dll
+*.zip
+*.7z
+*.rar
+*.iso
+*.log
+*.tmp
+.env*
+!.env.example
+

@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "sourceGamePath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Battle Mages",
+  "workRoot": "%USERPROFILE%\\BattleMages-RemasterWorkspace",
+  "note": "Documentation example only. Initialize-Workspace.ps1 resolves paths and generates ignored config/local.json."
+}
+
