@@ -1,5 +1,8 @@
 # Status — 2026-09-21
 
+Current work: docs/ROADMAP.md. Earlier sections below are chronological history;
+the latest runtime/topology entries supersede their pending statements.
+
 ## Implemented in this scaffold
 
 - Windows PowerShell 5.1 / PowerShell 7 source inventory with SHA-256.
@@ -60,3 +63,20 @@ Texture-only work cannot change the angular silhouette. A geometry pass on feet/
 ## Geometry probe v3
 
 User authorized first geometry experiment. Source-pinned probe_sam_geometry.py modifies XYZ of 32 vertices across the two pauldrons by uniform 1.30 scale about each part center. Source has 423 vertices and 414 triangles in six parts; counts are unchanged. Every byte outside selected position fields, including normals (unchanged under uniform scale), UVs, skin weights, skeleton/animation and trailing data remains identical. This is not a general SAM exporter or new-topology support. Package v3 retains alpha-fixed v2 textures and changes only After SAM. A diagnostic same-camera geometry preview is bundled. Runtime walking/attack/death tests remain pending.
+
+## v3 feedback and v4 topology test
+
+User confirmed v3 shoulders follow the body. Screenshot supports attached geometry;
+full attack/death validation remains pending. Agreed roadmap saved in ROADMAP.md.
+
+SAM section-table interpretation checked against all 127 supplied SAM files:
+uint32 count at byte 8, then 16-byte (id,size,offset,reserved) entries with contiguous
+payloads ending at EOF. Source-pinned v4 rebuilds only naplechnik1, interpolates UVs
+and normals, projects edge midpoints to endpoint tangent planes, and replaces 16
+triangles with 64 (16 -> 46 vertices). Updates geometry size and later section offsets.
+Other meshes and all non-geometry section payloads are byte-identical, including
+animation. This validates file construction locally, not the game's parser.
+
+v4 uses v2 geometry as base, removes v3 enlargement, keeps v2 alpha-fixed DDS bytes.
+Private package includes same-camera actual shoulder geometry and texture previews.
+Runtime loading, walking, attack and death require the user's Windows test.

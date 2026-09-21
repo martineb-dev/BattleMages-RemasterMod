@@ -13,7 +13,11 @@ Target the FIRST Battle Mages. All user-facing commands must work in Windows Pow
 
 ## Current milestone
 
-Models are PAUSED. Steam diagnostics are received and the user confirmed a successful test-copy menu/map launch with the original SHA-256 baseline unchanged. Next: controlled loose-texture loader probe, then asset integration. Test-LooseTexture.ps1 is a temporary synthetic diagnostic fixture, not a mod deployment. User confirmed menu TGA override on 2026-09-21. User screenshot confirms comparison troops and After DDS load. v1 alpha regression identified; v2 restores original alpha with RGB unchanged, runtime confirmation pending. Geometry probe v3 authorized: shoulder XYZ edits only, runtime validation pending. No general SAM mesh exporter validated.
+Active: geometry/topology experiments under docs/ROADMAP.md. Test-copy launch,
+loose overrides and comparison troops are user-confirmed. v3 edited shoulders
+follow the body (user confirmed 2026-09-21). Full attack/death checks remain open.
+v4 adds topology to one rigid shoulder; runtime unverified. No general SAM exporter
+or complete remastered model has been validated.
 
 ## Art decisions to preserve
 
