@@ -83,6 +83,23 @@ try {
     & (Join-Path $caseRepo 'scripts/Test-LooseTexture.ps1') -Mode Remove -Texture Paladin
     Assert-True (-not (Test-Path -LiteralPath $ddsPath)) 'DDS cleanup failed.'
 
+    $package=Join-Path $sandbox 'comparison-package'
+    [void][IO.Directory]::CreateDirectory((Join-Path $package 'payload/data'))
+    $fixture=Join-Path $package 'payload/data/comparison-fixture.xml'
+    [IO.File]::WriteAllText($fixture,'<fixture />')
+    Write-BMJson ([ordered]@{build='fixture';files=@([ordered]@{path='data/comparison-fixture.xml';sha256=(Get-FileHash -LiteralPath $fixture -Algorithm SHA256).Hash})}) (Join-Path $package 'manifest.json')
+    $installer=Join-Path $caseRepo 'scripts/Use-ComparisonBuild.ps1'
+    & $installer -PackagePath $package
+    $installed=Join-Path $config.testGamePath 'data/comparison-fixture.xml'
+    Assert-True (Test-Path -LiteralPath $installed) 'Comparison not installed.'
+    Assert-Throws { & $installer -PackagePath $package } 'Repeated install must refuse.'
+    [IO.File]::WriteAllText($installed,'changed')
+    Assert-Throws { & $installer -PackagePath $package -Mode Remove } 'Removal must preserve edited files.'
+    [IO.File]::Copy($fixture,$installed,$true)
+    & $installer -PackagePath $package -Mode Remove
+    Assert-True (-not (Test-Path -LiteralPath $installed)) 'Comparison removal failed.'
+    Assert-True (@(Compare-BMInventory $before @(Get-BMInventory $source)).Count -eq 0) 'Comparison changed source.'
+
     # Editing the test copy must not change the source: detects accidental hardlinks.
     [IO.File]::WriteAllText((Join-Path $config.testGamePath $packRelative),'MODIFIED TEST COPY')
     Assert-True (@(Compare-BMInventory $before @(Get-BMInventory $source)).Count -eq 0) 'Test copy shares mutable file data with original.'

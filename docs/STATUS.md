@@ -42,3 +42,11 @@ Models paused at Paladin v6 (visually accepted) and Swordsman v1 (review). Both 
 The published README for jTommy ExMachina GDP v2.0 explicitly excludes Battle Mages archive creation. It supports extraction. A different implementation requires its own validation.
 
 Source: https://www.playground.ru/ex_machina/file/exmachina_gdp_archives_unpacker_packer_v2_0_by_jtommy-864544
+
+## Chapter 1 comparison build
+
+User requested two extra starting troops in Part I / Chapter 1, Final Examination. Prepared a private cm1-comparison-paladin-v1 package from supplied extracted Pack3. The one-shot trigger follows the existing mission CreateNewObject and player:AddChild pattern. Before/After clone troop, unit and animated-model definitions; same-length SAM texture-name edits isolate their textures without changing geometry or animations. Before uses original DDS; After converts approved Paladin v6 PNG to 1024 DXT5 with mipmaps. Two six-unit troops spawn near the initial swordsmen at (4620,4640) and (4850,4640). Actual placement, XML overrides and game behavior are NOT runtime verified.
+
+Use-ComparisonBuild.ps1 installs only into the configured test copy, refuses existing loose files, records a manifest receipt, and removes only unchanged installed files. Original GDP files serve as untouched originals; there are no overwritten loose files to back up. Close the game before removal. Start a NEW chapter; existing saves do not rerun the startup trigger. Saves created with custom model IDs may require this package to remain installed.
+
+The Python builder accepts --unit, --troop and --stem for future units; current binary texture-name substitution requires a seven-character stem and one DDS reference. Additional asset formats require implementation and validation, not blind substitution. Payloads contain private derived game files and must not enter the public repository.
