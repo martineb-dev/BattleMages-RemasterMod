@@ -13,7 +13,7 @@ Target the FIRST Battle Mages. All user-facing commands must work in Windows Pow
 
 ## Current milestone
 
-Models are PAUSED. Steam diagnostics are received and the user confirmed a successful test-copy menu/map launch with the original SHA-256 baseline unchanged. Next: controlled loose-texture loader probe, then asset integration. Test-LooseTexture.ps1 is a temporary synthetic diagnostic fixture, not a mod deployment. User confirmed menu TGA override on 2026-09-21. Model DDS override remains unverified.
+Models are PAUSED. Steam diagnostics are received and the user confirmed a successful test-copy menu/map launch with the original SHA-256 baseline unchanged. Next: controlled loose-texture loader probe, then asset integration. Test-LooseTexture.ps1 is a temporary synthetic diagnostic fixture, not a mod deployment. User confirmed menu TGA override on 2026-09-21. User screenshot confirms comparison troops and After DDS load. v1 alpha regression identified; v2 restores original alpha with RGB unchanged, runtime confirmation pending. Geometry improvements requested for discussion; no SAM mesh exporter validated.
 
 ## Art decisions to preserve
 

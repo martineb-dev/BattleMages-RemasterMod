@@ -29,7 +29,36 @@ while True:
  if im.width==1: break
  im=im.resize((max(1,im.width//2),max(1,im.height//2)),Image.Resampling.LANCZOS)
 struct.pack_into('<I',header,8,0xA1007);struct.pack_into('<I',header,28,len(parts));struct.pack_into('<I',header,108,0x401008)
-afterdds=bytes(header)+b''.join(parts)
+afterdds=bytearray(bytes(header)+b''.join(parts))
+# Preserve original BC3 alpha endpoints/indices rather than recompressing the
+# cutout mask. New level 0 doubles its pixels; subsequent levels copy original mips.
+originaldds=(a.source/(folder+'/'+a.stem+'.dds')).read_bytes()
+assert originaldds[84:88]==b'DXT5' and struct.unpack_from('<II',originaldds,12)==(512,512)
+assert struct.unpack_from('<I',originaldds,28)[0]==10
+src_offsets=[];off=128
+for level in range(10):
+ src_offsets.append(off);n=max(1,128>>level);off+=n*n*16
+assert off==len(originaldds)
+off=128
+for level in range(11):
+ n=max(1,256>>level)
+ for y in range(n):
+  for x in range(n):
+   dest=off+16*(y*n+x)
+   if level:
+    src=src_offsets[level-1]+16*(y*n+x)
+    afterdds[dest:dest+8]=originaldds[src:src+8]
+   else:
+    src=128+16*((y//2)*128+x//2)
+    indices=int.from_bytes(originaldds[src+2:src+8],'little');expanded=0
+    for py in range(4):
+     for px in range(4):
+      oldpixel=((y%2)*2+py//2)*4+(x%2)*2+px//2
+      expanded|=((indices>>(3*oldpixel))&7)<<(3*(py*4+px))
+    afterdds[dest:dest+2]=originaldds[src:src+2]
+    afterdds[dest+2:dest+8]=expanded.to_bytes(6,'little')
+ off+=n*n*16
+afterdds=bytes(afterdds)
 for label,stem in [('Before','bmbefor'),('After','bmafter')]:
  modelid='BM'+label+'Model';unitid='BM'+label+'Unit';troopid='BM'+label+'Troop'
  u=copy.deepcopy(unit);u.set('ModelName',unitid);u.set('ModelFile',modelid);unit.getparent().append(u)
@@ -61,6 +90,6 @@ for tree,attr,tag in [(game,'ModelName','model'),(anim,'id','model')]:
  ids=[n.get(attr) for n in tree.findall('.//'+tag) if (n.get(attr) or '').startswith('BM')];assert len(ids)==len(set(ids))
 Image.open(io.BytesIO(afterdds)).load()
 files=[dict(path=f.relative_to(root).as_posix(),sha256=hashlib.sha256(f.read_bytes()).hexdigest()) for f in sorted(root.rglob('*')) if f.is_file()]
-manifest=dict(build='cm1-comparison-paladin-v1',map='cm1',unit=a.unit,troop=a.troop,afterSourceSha256=hashlib.sha256(a.after.read_bytes()).hexdigest(),runtimeStatus='unverified',files=files)
+manifest=dict(build='cm1-comparison-paladin-v2-alpha',map='cm1',unit=a.unit,troop=a.troop,afterSourceSha256=hashlib.sha256(a.after.read_bytes()).hexdigest(),runtimeStatus='unverified',files=files)
 (a.out/'manifest.json').write_text(json.dumps(manifest,indent=2))
 print(json.dumps(dict(files=len(files),afterDDSBytes=len(afterdds),output=str(a.out))))
