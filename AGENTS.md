@@ -13,12 +13,12 @@ Target the FIRST Battle Mages. All user-facing commands must work in Windows Pow
 
 ## Current milestone
 
-Models are PAUSED. Steam diagnostics are received and the user confirmed a successful test-copy menu/map launch with the original SHA-256 baseline unchanged. Next: controlled loose-texture loader probe, then asset integration. Test-LooseTexture.ps1 is a temporary synthetic diagnostic fixture, not a mod deployment. User confirmed menu TGA override on 2026-09-21. User screenshot confirms comparison troops and After DDS load. v1 alpha regression identified; v2 restores original alpha with RGB unchanged, runtime confirmation pending. Geometry improvements requested for discussion; no SAM mesh exporter validated.
+Models are PAUSED. Steam diagnostics are received and the user confirmed a successful test-copy menu/map launch with the original SHA-256 baseline unchanged. Next: controlled loose-texture loader probe, then asset integration. Test-LooseTexture.ps1 is a temporary synthetic diagnostic fixture, not a mod deployment. User confirmed menu TGA override on 2026-09-21. User screenshot confirms comparison troops and After DDS load. v1 alpha regression identified; v2 restores original alpha with RGB unchanged, runtime confirmation pending. Geometry probe v3 authorized: shoulder XYZ edits only, runtime validation pending. No general SAM mesh exporter validated.
 
 ## Art decisions to preserve
 
 - Every future model delivery includes BEFORE / AFTER on the actual same mesh, same camera, same scale, same pose and lighting, plus textures.
-- Preserve original geometry/UVs/design for the current texture-only scope.
+- Preserve original design and UVs. User has now authorized a small geometry experiment on After; keep Before unchanged.
 - Dark fantasy, worn materials, original character identity and palette. Paladin cloth is white with a slight lavender shadow. Paladin v6 is visually accepted; Swordsman v1 is awaiting review. Neither is game-integration tested.
 - No distinctive asymmetric damage on mirrored UV regions. Preserve the approved material texture/grain; avoid the rejected overly smooth appearance.
 - Player spirit is in scope. Process race units first, then other units, then environment and buildings.
