@@ -1,9 +1,10 @@
-# Status — 2026-09-20
+# Status — 2026-09-21
 
 ## Implemented in this scaffold
 
 - Windows PowerShell 5.1 / PowerShell 7 source inventory with SHA-256.
-- Diagnostic ZIP containing inventory, executable versions, GDP header samples and the small root datasource/config files. It contains no game executables, full archives, textures or save contents.
+- Supports executable-at-root with GDP/config files either at root or under data. The user's Steam layout has mages.exe at root and Pack*.gdp/config.cfg/datasources.txt in data.
+- Diagnostic ZIP containing inventory, executable versions, GDP header samples and the small datasource/config files, preserving relative paths. It contains no game executables, full archives, textures or save contents.
 - A separately copied test installation, verified against the original by file hash. Original source is never written to by these scripts.
 - Read-only verification against the recorded source baseline.
 - Local config and all original/binary/work files excluded from version control.
@@ -41,4 +42,3 @@ Models paused at Paladin v6 (visually accepted) and Swordsman v1 (review). Both 
 The published README for jTommy ExMachina GDP v2.0 explicitly excludes Battle Mages archive creation. It supports extraction. A different implementation requires its own validation.
 
 Source: https://www.playground.ru/ex_machina/file/exmachina_gdp_archives_unpacker_packer_v2_0_by_jtommy-864544
-

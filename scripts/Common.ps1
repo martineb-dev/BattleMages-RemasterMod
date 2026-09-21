@@ -74,14 +74,31 @@ function Write-BMJson {
     [IO.File]::WriteAllText($Path, $text + [Environment]::NewLine, (New-Object Text.UTF8Encoding($false)))
 }
 
+function Get-BMGameLayout {
+    param([string]$GamePath)
+    $GamePath = Get-BMFullPath $GamePath
+    Assert-BMNoReparsePath $GamePath
+    $executables = @(Get-ChildItem -LiteralPath $GamePath -Filter '*.exe' -File)
+    if ($executables.Count -eq 0) { throw 'Select the installation root containing the executable, not its data subfolder.' }
+    $locations = @(
+        foreach ($directory in @($GamePath, (Join-Path $GamePath 'data'))) {
+            Assert-BMNoReparsePath $directory
+            if (Test-Path -LiteralPath (Join-Path $directory 'Pack3.gdp') -PathType Leaf) {
+                Assert-BMNoReparsePath (Join-Path $directory 'Pack3.gdp')
+                $directory
+            }
+        }
+    )
+    if ($locations.Count -ne 1) {
+        throw "Expected one archive location (root or data), found $($locations.Count): $GamePath"
+    }
+    $relative = if ($locations[0] -eq $GamePath) { '.' } else { 'data' }
+    return [pscustomobject]@{ gameRoot=$GamePath; dataRoot=$locations[0]; dataRelativePath=$relative }
+}
+
 function Assert-BMGameRoot {
     param([string]$GamePath)
-    Assert-BMNoReparsePath $GamePath
-    if (-not (Test-Path -LiteralPath (Join-Path $GamePath 'Pack3.gdp') -PathType Leaf)) {
-        throw "Pack3.gdp was not found. Select the Battle Mages installation folder: $GamePath"
-    }
-    $executables = @(Get-ChildItem -LiteralPath $GamePath -Filter '*.exe' -File)
-    if ($executables.Count -eq 0) { throw 'No executable found at the installation root.' }
+    [void](Get-BMGameLayout $GamePath)
 }
 
 function Get-BMInventory {
@@ -110,4 +127,3 @@ function Compare-BMInventory {
         if (-not $left.ContainsKey($name)) { "Added: $name" }
     }
 }
-

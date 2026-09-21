@@ -21,6 +21,8 @@ The command sets RemoteSigned only for the child PowerShell process; it does not
 
 Default source: `C:\Program Files (x86)\Steam\steamapps\common\Battle Mages`.
 
+Select the installation root containing `mages.exe`, **not** its `data` subfolder. Setup detects GDP archives in either the root or `data`, copies the whole installation, and preserves the layout. The diagnostic ZIP preserves `data/datasources.txt` and `data/config.cfg` when present. If both archive locations exist, setup refuses to guess.
+
 Default work area: `%USERPROFILE%\BattleMages-RemasterWorkspace`. It must not already exist at the first initialization. Setup makes `game-test`, `assets`, `backups`, `builds`, `reports`, and `source-baseline.json` there. The source installation is read-only. Copying needs roughly the size of the installed game in extra free disk space.
 
 The final output gives a diagnostic ZIP path. Upload that ZIP to the shared project's `04_Diagnostics` Drive folder. You do not need to upload the whole Steam installation or non-Steam installer yet.

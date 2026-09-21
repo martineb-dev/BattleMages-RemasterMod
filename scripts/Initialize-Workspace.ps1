@@ -9,7 +9,7 @@ $repo = Get-BMFullPath (Split-Path $PSScriptRoot -Parent)
 $GamePath = Get-BMFullPath $GamePath
 $WorkRoot = Get-BMFullPath $WorkRoot
 $configPath = Join-Path $repo 'config\local.json'
-Assert-BMGameRoot $GamePath
+$layout = Get-BMGameLayout $GamePath
 Assert-BMSeparatePaths $GamePath $repo
 Assert-BMSeparatePaths $GamePath $WorkRoot
 Assert-BMSeparatePaths $repo $WorkRoot
@@ -49,6 +49,8 @@ Write-BMJson ([ordered]@{schemaVersion=1;createdUtc=[DateTime]::UtcNow.ToString(
 $reportZip = & (Join-Path $PSScriptRoot 'Get-GameReport.ps1') -GamePath $GamePath -OutputDirectory (Join-Path $WorkRoot 'reports')
 $config = [ordered]@{
     schemaVersion=1; sourceGamePath=$GamePath; workRoot=$WorkRoot; testGamePath=$testPath
+    sourceDataPath=$layout.dataRoot; dataRelativePath=$layout.dataRelativePath
+    testDataPath=(Join-Path $testPath $layout.dataRelativePath)
     sourceBaseline=$baselinePath; lastDiagnosticZip=$reportZip
     loaderStatus='unverified'; launchStatus='not-tested'; modInstalled=$false
 }
@@ -60,4 +62,3 @@ Write-Host "Test installation: $testPath"
 Write-Host "Upload this ZIP to Drive / 04_Diagnostics: $reportZip" -ForegroundColor Cyan
 Write-Host 'No mod was applied and the game was not launched.'
 return [pscustomobject]$config
-
