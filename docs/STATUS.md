@@ -97,3 +97,18 @@ remain unchanged; this is a first rounded silhouette pass, not a complete new mo
 Local structural and preservation assertions pass. v5 loading/skinning, including walking,
 attack and death, remain UNVERIFIED in game. Private package includes actual same-camera
 Before/After geometry preview with the same After texture on both sides, plus textures.
+
+## v5 accepted; v6 equipment batch
+
+User accepted v5 with in-game screenshot (2026-09-21) and requested larger steps.
+v6 batches shield solidification/rim, alpha-contour guard extrusion and blade ridge
+thickening. Source pinned to v5; source DDS pinned and unchanged. Alpha clipped
+surface is tessellated, reverse UVs interpolated from source reverse faces, and
+boundary walls use an existing opaque metal swatch. Original shield/sword attachment
+names, materials, body meshes and all non-geometry chunks remain unchanged.
+Local checks: valid indices/counts, finite records, positive winding-to-normal dot
+for equipment faces, exact preservation of other meshes/sections and all other
+payload files. Total 9278 triangles; development topology, not army-scale optimized.
+Preview culls reverse normals to avoid coplanar front/back artifacts on original
+shield. No texture smoothing or recoloring was applied. Runtime loading, attack,
+reverse UV appearance and performance require Windows verification.

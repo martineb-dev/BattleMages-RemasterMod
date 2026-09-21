@@ -17,7 +17,9 @@ Active: geometry/topology experiments under docs/ROADMAP.md. Test-copy launch,
 loose overrides and comparison troops are user-confirmed. v3 edited shoulders
 follow the body (user confirmed 2026-09-21). Full attack/death checks remain open.
 v4 user reports normal movement. v5 refines rigid armor and adds weighted lower-leg
-vertices; runtime skinning validation pending. No general SAM exporter
+vertices; user accepted v5 in-game on 2026-09-21, exhaustive animations not verified.
+v6 equipment is ready for runtime testing. User prefers larger coherent batches
+(e.g. shield and sword together), not repeated single-part probes. No general SAM exporter
 or complete remastered model has been validated.
 
 ## Art decisions to preserve
