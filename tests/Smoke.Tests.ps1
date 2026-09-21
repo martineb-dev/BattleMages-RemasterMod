@@ -65,6 +65,14 @@ try {
     Assert-Throws { & (Join-Path $caseRepo 'scripts/Initialize-Workspace.ps1') -GamePath $source -WorkRoot $work } 'Second setup should refuse to overwrite.'
     & (Join-Path $caseRepo 'scripts/Test-SourceBaseline.ps1')
 
+    & (Join-Path $caseRepo 'scripts/Test-LooseTexture.ps1') -Mode Prepare
+    $probe = Join-Path $config.testGamePath 'data/if/ico/Mainmenu/Symbol.tga'
+    Assert-True ((Get-Item -LiteralPath $probe).Length -eq 524306) 'Wrong probe size.'
+    Assert-Throws { & (Join-Path $caseRepo 'scripts/Test-LooseTexture.ps1') -Mode Prepare } 'Existing probe must not be overwritten.'
+    & (Join-Path $caseRepo 'scripts/Test-LooseTexture.ps1') -Mode Remove
+    Assert-True (-not (Test-Path -LiteralPath $probe)) 'Probe cleanup failed.'
+    Assert-True (@(Compare-BMInventory $before @(Get-BMInventory $source)).Count -eq 0) 'Probe changed original source.'
+
     # Editing the test copy must not change the source: detects accidental hardlinks.
     [IO.File]::WriteAllText((Join-Path $config.testGamePath $packRelative),'MODIFIED TEST COPY')
     Assert-True (@(Compare-BMInventory $before @(Get-BMInventory $source)).Count -eq 0) 'Test copy shares mutable file data with original.'

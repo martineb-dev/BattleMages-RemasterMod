@@ -16,12 +16,12 @@
 - GDP archive creation: no supported tool established.
 - DDS conversion and mod payload building: not implemented.
 - Patch deployment, per-file backups and rollback: planned, not implemented.
-- Launch behavior of the copied Steam executable: untested. It could depend on Steam or select a shared save/config path; do not assume full runtime isolation from a file copy alone.
+- Test-copy launch confirmed by user on 2026-09-21: main menu and cm1 loaded successfully, normal quit recorded, original file baseline unchanged. Exit code 1 accompanied normal shutdown; do not use it alone to classify a crash. Registry/external save isolation is not established.
 - Automated in-game testing: not implemented. No local Windows game is accessible from the cloud chat.
 
 ## Next input
 
-Run Initialize-Workspace.ps1 locally and upload its BM-Diagnostics-*.zip into the shared Drive diagnostics folder. This identifies the executable/version, archive format signatures and datasource configuration without requesting the full installation initially.
+Diagnostics received and inspected. datasources.txt lists data, then Pack_Loc, pack1, pack2, pack3. This suggests loose-file loading but does not establish precedence. Test-LooseTexture.ps1 creates a synthetic 512x256 BGRA TGA at the menu logo path referenced by extracted mainmenuwnd.xml. Run mode launches the test copy and removes the fixture on exit; Remove mode recovers an interrupted run. Existing loose textures are refused, never overwritten. User observation is required; no loader success claimed yet.
 
 Keep Steam closed to game updates and keep the game closed during setup. The original directory may still be changed independently by Steam or the game; source-baseline checks will detect that. Setup copies profiles locally, but diagnostics only include their filenames/hashes, not save bytes.
 

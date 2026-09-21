@@ -52,3 +52,9 @@ Future mod builds will pin approved texture hashes and converter versions, valid
 ## Review format
 
 Every art delivery includes the original and new texture on the same real mesh, with matching camera, pose, scale and lighting, plus texture comparisons. Preserve the original visual identity; see `AGENTS.md` for the current art decisions.
+
+## Temporary loader probe
+
+After a successful unchanged test-copy launch, run `powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File .\scripts\Test-LooseTexture.ps1`. Look for a pink/green checkerboard replacing the main-menu logo and exit normally. The fixture is removed on exit; GDP archives and datasource order remain unchanged. This probes the TGA UI loading route only, not DDS model-texture compatibility. Existing loose textures are never overwritten.
+
+If interrupted, close the game and rerun with `-Mode Remove`. The marker and expected SHA-256 prevent deleting an unrelated or modified file. Empty directories may remain. Never classify the visual outcome from the executable exit code alone.

@@ -13,7 +13,7 @@ Target the FIRST Battle Mages. All user-facing commands must work in Windows Pow
 
 ## Current milestone
 
-Models are PAUSED. Establish the mod toolchain and obtain a Steam installation diagnostic report. This scaffold copies and inventories files; it does not install a texture mod or assert that the copy launches successfully.
+Models are PAUSED. Steam diagnostics are received and the user confirmed a successful test-copy menu/map launch with the original SHA-256 baseline unchanged. Next: controlled loose-texture loader probe, then asset integration. Test-LooseTexture.ps1 is a temporary synthetic diagnostic fixture, not a mod deployment. Loader precedence remains unverified until observed.
 
 ## Art decisions to preserve
 
