@@ -80,3 +80,20 @@ animation. This validates file construction locally, not the game's parser.
 v4 uses v2 geometry as base, removes v3 enlargement, keeps v2 alpha-fixed DDS bytes.
 Private package includes same-camera actual shoulder geometry and texture previews.
 Runtime loading, walking, attack and death require the user's Windows test.
+
+## v4 feedback and v5 geometry pass
+
+User reports normal movement after v4 and supplied in-game screenshot. This supports
+loading and movement, not independently measured runtime triangle count or all animations.
+v5 refines both rigid shoulders and helmet with two subdivision rounds, and weighted
+lower legs (bone subsets 30/31 and 35/36). Boundary neighbors split to avoid T-junctions
+inside indexed mesh; coincident seam positions use shared curvature normals. Existing
+vertex records and bone weights stay exact. New weights interpolate endpoints, normalize,
+and must not exceed the four influences already observed in the source. New joints are
+not added. Animation and other non-geometry sections remain byte-identical.
+
+Total triangles: 414 -> 2646. Original body upper parts, shield/sword and approved DDS
+remain unchanged; this is a first rounded silhouette pass, not a complete new model.
+Local structural and preservation assertions pass. v5 loading/skinning, including walking,
+attack and death, remain UNVERIFIED in game. Private package includes actual same-camera
+Before/After geometry preview with the same After texture on both sides, plus textures.
