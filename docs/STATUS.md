@@ -151,3 +151,32 @@ Remove command for that exact package, then reinstall the prior package. This is
 not an atomic switch or automatic rollback. PowerShell parser and Linux pwsh smoke
 checks passed, including invalid incoming data, preserving local edits, switching
 forward/back and source-byte preservation. Windows game testing remains separate.
+
+## Reference correction and Realism Study 01
+
+User says Master Candidate 01 does not achieve the expected photographic fantasy
+look; latest reference is ead528fa-e273-4f22-8d04-cd78efd19d2b.png. Keep this as the
+visual goal, not a claim about the original renderer. Master Candidate 01 remains
+an integration candidate, not visually accepted as the remaster master.
+
+Built a separate static Blender 4.5.3 / Cycles study through
+`tools/build_paladin_material_study.py`. Inputs/outputs are private and external.
+Derived geometry uses the existing master, replacing intersecting shoulder/tabard
+inner/outer layers with single outer shells plus physical thickness. Added 4178
+actual steel chain links for the modern master view. These are high-detail study
+geometry; no direct SAM export or game-performance claim is made. Source skinning
+metadata is retained in private JSON, but the Blender scene has NO animation rig.
+
+Separate steel/cloth/leather material responses; approximate green team tint uses
+the original MRK. The approved atlas RGB/alpha is retained as source and still
+contains painted lighting. This is a material study, not finished PBR texture
+production. Camera/lighting are fixed across: original mesh with diffuse atlas,
+modern shell geometry with diffuse atlas, and PBR+physical-mail view. Studio results
+must not be presented as in-game results. Packed Blender scene, maps and actual
+rendered comparisons are delivered in a private archive; game-test is untouched.
+
+The extracted .shader examples examined describe animated texture sequences.
+They do not establish PBR/normal-map support for units. Next: author a genuinely
+modern asset and unlit material maps, then assess what geometry and baked detail
+can be transferred to the legacy engine. Renderer modifications are a separate
+investigation; a GPU's capabilities alone do not establish engine support.

@@ -36,3 +36,13 @@ Next gate: load a new cm1, compare Before/After at the same camera; observe idle
 walking, attacks and death, especially sword grip and ankle deformation. Verify
 shield reverse face/cutout edges and test several troops for performance. Save
 actual evidence before advancing the candidate's runtime status.
+
+## Latest quality correction
+
+Master Candidate 01 does not satisfy the user's expected realism. Target the newer
+reference ead528fa-e273-4f22-8d04-cd78efd19d2b.png while retaining white/lavender cloth
+and the worn fantasy direction. Realism Study 01 establishes actual Blender/Cycles
+look development, repaired physical surfaces and separate material responses.
+It is a static modern-renderer study; it does not prove equivalent appearance in
+Battle Mages and is not a deployable mod. Before another final-master claim, address
+armor construction, cloth form, clean material channels and legacy integration.

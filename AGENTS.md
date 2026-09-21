@@ -20,7 +20,9 @@ v4 user reports normal movement. v5 refines rigid armor and adds weighted lower-
 vertices; user accepted v5 in-game on 2026-09-21, exhaustive animations not verified.
 v6 equipment loaded in-game (user screenshot, 2026-09-21). User prefers larger coherent batches
 (e.g. shield and sword together), not repeated single-part probes. User authorized a full model overhaul. Master Candidate 01 changes all six parts;
-its Windows runtime, attack/death and performance checks are pending. No general
+its Windows runtime, attack/death and performance checks are pending. The user does
+not accept its appearance as the target remaster: use the latest photorealistic
+reference ead528fa-e273-4f22-8d04-cd78efd19d2b.png. No general
 SAM exporter or final art master has been validated.
 
 ## Art decisions to preserve
@@ -40,3 +42,15 @@ SAM exporter or final art master has been validated.
 - Meaningful tests: source remains byte-identical, dangerous/overlapping paths are rejected, junctions are refused, diagnostics exclude game binaries, incomplete initialization cannot be mistaken for success.
 - Run tests/Smoke.Tests.ps1 and the PowerShell parser gate. Do not claim an in-game test without running the game.
 
+
+## Realism target (latest user correction)
+
+Do not treat more triangles or a subdivided legacy silhouette as a finished modern
+character. Work toward convincingly constructed armor, shaped cloth, physical
+material response and original character identity. A studio PBR preview is not
+proof that the old engine can reproduce it. Label studio renders, static unrigged
+assets and in-game evidence separately. Current Realism Study 01 is a Blender/Cycles
+prototype derived from Master Candidate 01, with physical shoulder/tabard shells,
+real chain links and material separation. It is neither a replacement SAM build nor
+an approved final master. Existing diffuse atlas still contains painted lighting;
+proper PBR albedo/normal/roughness authoring and legacy-renderer integration remain.
