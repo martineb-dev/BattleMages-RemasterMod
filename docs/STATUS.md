@@ -112,3 +112,42 @@ payload files. Total 9278 triangles; development topology, not army-scale optimi
 Preview culls reverse normals to avoid coplanar front/back artifacts on original
 shield. No texture smoothing or recoloring was applied. Runtime loading, attack,
 reverse UV appearance and performance require Windows verification.
+
+## v6 loaded; full-model Master Candidate 01
+
+2026-09-21: user supplied a close in-game v6 screenshot and requested a full model
+overhaul, particularly proper sword geometry, instead of more isolated probes.
+v6 loading and visible equipment are confirmed; exhaustive animations are not.
+
+`tools/build_paladin_master.py` requires the pinned v2 SAM and pinned v6 SAM.
+It changes all six mesh parts and outputs 11826 triangles. New blade, bevels and
+fullers, rounded grip and pommel; original wing-shaped guard gets added depth.
+Shield is rebuilt from the established outline with a curved surface and narrow
+edge. New boots use four overlapping geometric toe plates per foot, attached to
+original foot/shin bones. Torso, hands, arms, cloth, helmet and shoulders receive
+curved refinement. Some existing surfaces are refined rather than authored anew.
+Approved DDS bytes, MRK, Before assets and all mission files are unchanged.
+
+Source skeleton/animation and all non-geometry sections are byte-identical.
+New/interpolated skinning uses existing bones, normalized weights and at most four
+influences. These properties do not independently prove deformation quality.
+Local geometry checks cover finite values, valid indices, section layout, binary
+roundtrip, unit normals, positive face/normal orientation, nonzero triangle areas
+and preservation of the other payload files. No PBR shader, new rig, new animation
+or LOD chain has been introduced. Runtime status is UNVERIFIED until the user tests.
+
+Private package includes actual SAM before/after previews, v6-to-candidate details,
+original/After texture PNGs, deployable SAM/DDS and static OBJ/MTL inspection exports.
+Offline previews use the same pose/camera/light within each pair, but do not simulate
+the engine's player-color shader or lighting. OBJ exports are static, not a rigged
+interchange format; the game SAM retains its original rig/clip sections.
+
+`Switch-ComparisonBuild.ps1` validates the complete incoming package, installed
+checksums, exact prior manifest and source baseline before removing an existing
+comparison. Finds previous package under workspace/builds (or accepts an explicit
+path). Retains both packages for rollback. Modified/unmanaged loose files are
+refused. A copy failure can leave a partial new receipt; recover with the existing
+Remove command for that exact package, then reinstall the prior package. This is
+not an atomic switch or automatic rollback. PowerShell parser and Linux pwsh smoke
+checks passed, including invalid incoming data, preserving local edits, switching
+forward/back and source-byte preservation. Windows game testing remains separate.

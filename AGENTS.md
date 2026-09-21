@@ -18,15 +18,16 @@ loose overrides and comparison troops are user-confirmed. v3 edited shoulders
 follow the body (user confirmed 2026-09-21). Full attack/death checks remain open.
 v4 user reports normal movement. v5 refines rigid armor and adds weighted lower-leg
 vertices; user accepted v5 in-game on 2026-09-21, exhaustive animations not verified.
-v6 equipment is ready for runtime testing. User prefers larger coherent batches
-(e.g. shield and sword together), not repeated single-part probes. No general SAM exporter
-or complete remastered model has been validated.
+v6 equipment loaded in-game (user screenshot, 2026-09-21). User prefers larger coherent batches
+(e.g. shield and sword together), not repeated single-part probes. User authorized a full model overhaul. Master Candidate 01 changes all six parts;
+its Windows runtime, attack/death and performance checks are pending. No general
+SAM exporter or final art master has been validated.
 
 ## Art decisions to preserve
 
-- Every future model delivery includes BEFORE / AFTER on the actual same mesh, same camera, same scale, same pose and lighting, plus textures.
-- Preserve original design and UVs. User has now authorized a small geometry experiment on After; keep Before unchanged.
-- Dark fantasy, worn materials, original character identity and palette. Paladin cloth is white with a slight lavender shadow. Paladin v6 is visually accepted; Swordsman v1 is awaiting review. Neither is game-integration tested.
+- Every future model delivery includes BEFORE / AFTER using the actual original and candidate meshes, matching camera, scale, pose and lighting, plus textures.
+- Preserve original design and approved texture/UV islands. Full geometry overhaul is authorized on After, including new sword and boots; keep Before unchanged. New geometry may remap within existing opaque texture islands.
+- Dark fantasy, worn materials, original character identity and palette. Paladin cloth is white with a slight lavender shadow. Paladin texture v6 is visually accepted and integrated through the alpha-fixed DDS. Geometry build v6 is a separate checkpoint. Swordsman v1 awaits review and integration.
 - No distinctive asymmetric damage on mirrored UV regions. Preserve the approved material texture/grain; avoid the rejected overly smooth appearance.
 - Player spirit is in scope. Process race units first, then other units, then environment and buildings.
 - Implement clear feedback directly; do not repeatedly ask the user to say 'next'.

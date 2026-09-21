@@ -5,10 +5,10 @@ Target its readable, rounded armor and dimensional equipment. Preserve original
 character design, worn dark-fantasy materials and white cloth with lavender shade;
 the reference's sunny pristine setting is not a replacement for that direction.
 
-1. IN PROGRESS: prove additional vertices/triangles can load and animate in SAM.
+1. LOADING/MOVEMENT PROVEN for tested builds: additional vertices/triangles in SAM.
    v3 position-only shoulders followed the body (user confirmed). v4 subdivides
    one rigid shoulder, 16 to 46 vertices and 16 to 64 triangles. User reports normal movement. Full animation coverage and installed-file verification remain open.
-2. IN PROGRESS (v5 accepted; v6 equipment batch runtime pending): Refine complete paladin silhouette: shoulders, helmet, hands, boots, legs,
+2. IN PROGRESS (v5 accepted; v6 equipment loaded; Master Candidate 01 runtime pending): Refine complete paladin silhouette: shoulders, helmet, hands, boots, legs,
    shield thickness and sword profile. Remove v3 diagnostic enlargement.
 3. Preserve original skeleton/animations where compatible; assign new body
    vertices appropriate weights. Verify idle, walk, attack and death.
@@ -22,3 +22,17 @@ Original installation read-only. Private derived assets stay out of GitHub.
 Each milestone needs observed evidence before being marked complete.
 
 Workflow: user prefers larger coherent batches; keep before/after and rollback.
+
+## Full geometry batch — Master Candidate 01
+
+User authorized the full model pass after v6 loaded in game. New blade with physical
+bevel/fullers, rounded grip/pommel, thicker original wing-shaped guard, rebuilt
+curved shield with slimmer rim, new layered metal boots and a complete weighted
+body refinement. Helm and both shoulders also receive curvature/normal refinement.
+Original approved texture stays exact. 11826 triangles; this is a development
+candidate, not a final optimized master or a new rendering engine.
+
+Next gate: load a new cm1, compare Before/After at the same camera; observe idle,
+walking, attacks and death, especially sword grip and ankle deformation. Verify
+shield reverse face/cutout edges and test several troops for performance. Save
+actual evidence before advancing the candidate's runtime status.

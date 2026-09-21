@@ -100,6 +100,33 @@ try {
     Assert-True (-not (Test-Path -LiteralPath $installed)) 'Comparison removal failed.'
     Assert-True (@(Compare-BMInventory $before @(Get-BMInventory $source)).Count -eq 0) 'Comparison changed source.'
 
+    # Build switching must preflight the new payload and preserve local edits.
+    $builds=Join-Path $work 'builds'
+    $previous=Join-Path $builds 'previous'
+    $incoming=Join-Path $builds 'incoming'
+    Copy-Item -LiteralPath $package -Destination $previous -Recurse
+    Copy-Item -LiteralPath $package -Destination $incoming -Recurse
+    $incomingFile=Join-Path $incoming 'payload/data/comparison-fixture.xml'
+    [IO.File]::WriteAllText($incomingFile,'<fixture version="2" />')
+    Write-BMJson ([ordered]@{build='fixture2';files=@([ordered]@{path='data/comparison-fixture.xml';sha256=(Get-FileHash -LiteralPath $incomingFile -Algorithm SHA256).Hash})}) (Join-Path $incoming 'manifest.json')
+    $switcher=Join-Path $caseRepo 'scripts/Switch-ComparisonBuild.ps1'
+    & $installer -PackagePath $previous
+    $originalFixtureHash=(Get-FileHash -LiteralPath $installed -Algorithm SHA256).Hash
+    [IO.File]::WriteAllText($incomingFile,'corrupt incoming build')
+    Assert-Throws { & $switcher -PackagePath $incoming } 'Corrupt build must not replace the installed build.'
+    Assert-True ((Get-FileHash -LiteralPath $installed -Algorithm SHA256).Hash -eq $originalFixtureHash) 'Failed preflight removed the working build.'
+    [IO.File]::WriteAllText($incomingFile,'<fixture version="2" />')
+    [IO.File]::WriteAllText($installed,'local edit')
+    Assert-Throws { & $switcher -PackagePath $incoming } 'Build switch must preserve edited installed files.'
+    Assert-True ((Get-Content -LiteralPath $installed -Raw) -eq 'local edit') 'Switch overwrote a local edit.'
+    [IO.File]::Copy($fixture,$installed,$true)
+    & $switcher -PackagePath $incoming
+    Assert-True ((Get-FileHash -LiteralPath $installed -Algorithm SHA256).Hash -eq (Get-FileHash -LiteralPath $incomingFile -Algorithm SHA256).Hash) 'Switch did not install new bytes.'
+    & $switcher -PackagePath $previous
+    Assert-True ((Get-FileHash -LiteralPath $installed -Algorithm SHA256).Hash -eq $originalFixtureHash) 'Switch back did not restore previous bytes.'
+    & $installer -PackagePath $previous -Mode Remove
+    Assert-True (@(Compare-BMInventory $before @(Get-BMInventory $source)).Count -eq 0) 'Build switching changed the source.'
+
     # Editing the test copy must not change the source: detects accidental hardlinks.
     [IO.File]::WriteAllText((Join-Path $config.testGamePath $packRelative),'MODIFIED TEST COPY')
     Assert-True (@(Compare-BMInventory $before @(Get-BMInventory $source)).Count -eq 0) 'Test copy shares mutable file data with original.'

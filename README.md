@@ -1,6 +1,6 @@
 # BattleMages-RemasterMod
 
-A texture-first mod project for the original **Battle Mages**. Current milestone: reproducible Windows tooling and a separate test installation. No texture mod is installed by this initial scaffold.
+A visual mod project for the original **Battle Mages**. The separate test installation supports comparison troops, texture overrides and experimental SAM geometry. Current candidate: full paladin geometry pass; see `docs/STATUS.md` for the evidence and remaining runtime checks.
 
 ## First run — Windows PowerShell
 
@@ -60,3 +60,21 @@ After a successful unchanged test-copy launch, run `powershell.exe -NoProfile -E
 If interrupted, close the game and rerun with `-Mode Remove`. The marker and expected SHA-256 prevent deleting an unrelated or modified file. Empty directories may remain. Never classify the visual outcome from the executable exit code alone.
 
 For the model DDS probe, add `-Texture Paladin`. Load a map with a visible paladin and look for pink/green on its equipment. Its portrait is not the target. Recovery uses `-Mode Remove -Texture Paladin`. A negative observation without a visible paladin is inconclusive.
+
+## Switch comparison builds
+
+Keep private build packages outside Git. Close the game, unpack the new package into
+`BattleMages-RemasterWorkspace/builds`, then run from the checkout:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File .\scripts\Switch-ComparisonBuild.ps1 -PackagePath 'C:\path\to\unpacked-package' -Launch
+```
+
+The script finds the installed build's exact manifest under workspace/builds,
+checks both packages and installed files before removal, and installs only into
+the configured test copy. Use `-PreviousPackagePath` if the old package is stored
+elsewhere. Both package directories remain available; switching back uses the same
+command with the older package path. Local edits are preserved by refusing to switch.
+A disk/copy failure may need manual recovery using the exact partial package's
+`Use-ComparisonBuild.ps1 -Mode Remove`; rollback is not automatic. Start a NEW
+Chapter 1 / Final Examination. Existing saves do not rerun the comparison spawn.
