@@ -12,7 +12,7 @@
 
 ## Not implemented / not verified yet
 
-- Loading modified assets in the Steam build: unverified.
+- User confirmed the menu TGA checkerboard appeared on 2026-09-21. Loose TGA overrides the archived logo with unchanged datasources order. Model DDS loading remains unverified.
 - GDP archive creation: no supported tool established.
 - DDS conversion and mod payload building: not implemented.
 - Patch deployment, per-file backups and rollback: planned, not implemented.
@@ -21,7 +21,7 @@
 
 ## Next input
 
-Diagnostics received and inspected. datasources.txt lists data, then Pack_Loc, pack1, pack2, pack3. This suggests loose-file loading but does not establish precedence. Test-LooseTexture.ps1 creates a synthetic 512x256 BGRA TGA at the menu logo path referenced by extracted mainmenuwnd.xml. Run mode launches the test copy and removes the fixture on exit; Remove mode recovers an interrupted run. Existing loose textures are refused, never overwritten. User observation is required; no loader success claimed yet.
+Diagnostics received and inspected. datasources.txt lists data, then Pack_Loc, pack1, pack2, pack3. Menu TGA override is now confirmed by user observation. Test-LooseTexture.ps1 creates a synthetic 512x256 BGRA TGA at the menu logo path referenced by extracted mainmenuwnd.xml. Run mode launches the test copy and removes the fixture on exit; Remove mode recovers an interrupted run. Existing loose textures are refused, never overwritten. Next: -Texture Paladin probes the original 512x512 DXT5 format with 10 mip levels. A visible paladin is required; menu-only observation cannot validate this test.
 
 Keep Steam closed to game updates and keep the game closed during setup. The original directory may still be changed independently by Steam or the game; source-baseline checks will detect that. Setup copies profiles locally, but diagnostics only include their filenames/hashes, not save bytes.
 

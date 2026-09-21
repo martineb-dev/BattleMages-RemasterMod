@@ -58,3 +58,5 @@ Every art delivery includes the original and new texture on the same real mesh, 
 After a successful unchanged test-copy launch, run `powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File .\scripts\Test-LooseTexture.ps1`. Look for a pink/green checkerboard replacing the main-menu logo and exit normally. The fixture is removed on exit; GDP archives and datasource order remain unchanged. This probes the TGA UI loading route only, not DDS model-texture compatibility. Existing loose textures are never overwritten.
 
 If interrupted, close the game and rerun with `-Mode Remove`. The marker and expected SHA-256 prevent deleting an unrelated or modified file. Empty directories may remain. Never classify the visual outcome from the executable exit code alone.
+
+For the model DDS probe, add `-Texture Paladin`. Load a map with a visible paladin and look for pink/green on its equipment. Its portrait is not the target. Recovery uses `-Mode Remove -Texture Paladin`. A negative observation without a visible paladin is inconclusive.

@@ -73,6 +73,16 @@ try {
     Assert-True (-not (Test-Path -LiteralPath $probe)) 'Probe cleanup failed.'
     Assert-True (@(Compare-BMInventory $before @(Get-BMInventory $source)).Count -eq 0) 'Probe changed original source.'
 
+    & (Join-Path $caseRepo 'scripts/Test-LooseTexture.ps1') -Mode Prepare -Texture Paladin
+    $ddsPath = Join-Path $config.testGamePath 'data/models/units/humans/paladin.dds'
+    $dds = [IO.File]::ReadAllBytes($ddsPath)
+    Assert-True ($dds.Length -eq 349680) 'Wrong DDS mip chain size.'
+    Assert-True ([Text.Encoding]::ASCII.GetString($dds,84,4) -eq 'DXT5') 'Wrong DDS format.'
+    Assert-True ([BitConverter]::ToUInt32($dds,28) -eq 10) 'Missing DDS mip levels.'
+    Assert-Throws { & (Join-Path $caseRepo 'scripts/Test-LooseTexture.ps1') -Mode Remove } 'Wrong texture mode must not delete the probe.'
+    & (Join-Path $caseRepo 'scripts/Test-LooseTexture.ps1') -Mode Remove -Texture Paladin
+    Assert-True (-not (Test-Path -LiteralPath $ddsPath)) 'DDS cleanup failed.'
+
     # Editing the test copy must not change the source: detects accidental hardlinks.
     [IO.File]::WriteAllText((Join-Path $config.testGamePath $packRelative),'MODIFIED TEST COPY')
     Assert-True (@(Compare-BMInventory $before @(Get-BMInventory $source)).Count -eq 0) 'Test copy shares mutable file data with original.'
