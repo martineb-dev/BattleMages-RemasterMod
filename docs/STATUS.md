@@ -180,3 +180,41 @@ They do not establish PBR/normal-map support for units. Next: author a genuinely
 modern asset and unlit material maps, then assess what geometry and baked detail
 can be transferred to the legacy engine. Renderer modifications are a separate
 investigation; a GPU's capabilities alone do not establish engine support.
+
+## Realism GameTest 01: deployable legacy adaptation, awaiting Windows test
+
+User explicitly requested integrating RealismStudy and flattening the rounded
+feet. Created an actual SAM/DDS package from that study, rather than offering the
+older MasterCandidate installer again. The previous download error was the user
+selecting the valid static Study ZIP, not a damaged download.
+
+`export_paladin_realism_game.py` evaluates the pinned study's shoulder and tabard
+shells, merges cloth into the original weighted body part, transfers weights by
+closest-triangle barycentrics, and rebuilds the six-part SAM geometry section.
+Skeleton, animation and all other sections are byte-identical to MasterCandidate.
+Largest transfer distance is 0.09275 game units, about 9.3 mm in the study scale.
+New boot soles have 12 boundary contact positions per foot, one plane at z=0.03
+in the source pose, heel/toe chamfers and broad overlapping metal plates.
+This does not guarantee planted feet in every animation frame or on slopes.
+
+The candidate has 16,544 triangles. The 501,360 study mail triangles are omitted.
+`bake_paladin_mail.py` projects the physical links into a tangent-space authoring
+map; `build_paladin_legacy_texture.py` adds a restrained 22% local diffuse-detail
+contribution through the existing mail mask. All other material regions retain
+the approved design; unchanged BC3 color blocks are copied. All BC3 alpha blocks
+at every mip level are byte-identical, as is the original MRK. The normal map is
+included for authoring only, not deployed as an unsupported game shader.
+
+Only bmafter.sam and bmafter.dds differ from the prior comparison payload. Before
+files, troop definitions and Chapter 1 spawn configuration remain unchanged.
+`Install-RealismGameTest.ps1` checks a pinned NEW ZIP and identifies the old static
+study explicitly before extraction. It validates workspace/source separation and
+uses the existing verified-file switcher; prior build folders remain available.
+No claim of atomic switching or automatic rollback is made.
+
+Local checks: SAM roundtrip, finite geometry, unit normals, positive winding,
+bone IDs/normalized weights, non-geometry section identity, planar contact
+vertices, DDS decode/alpha preservation, and exact preservation of other payloads.
+PowerShell parser and smoke suite passed on Linux pwsh. Previews are renders of
+the delivered SAM/DDS under matched diffuse studio conditions, NOT engine captures.
+Windows load/movement/attack/death, foot placement and performance remain pending.

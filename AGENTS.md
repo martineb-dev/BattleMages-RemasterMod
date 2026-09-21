@@ -54,3 +54,18 @@ prototype derived from Master Candidate 01, with physical shoulder/tabard shells
 real chain links and material separation. It is neither a replacement SAM build nor
 an approved final master. Existing diffuse atlas still contains painted lighting;
 proper PBR albedo/normal/roughness authoring and legacy-renderer integration remain.
+
+## Realism game adaptation
+
+Realism GameTest 01 now has a private SAM/DDS comparison package. It is a legacy
+adaptation of the study, not the full Cycles look. Study shoulder/tabard shells
+were evaluated and exported; original body weights were transferred by nearest
+triangle barycentrics. Original skeleton/animation sections remain unchanged.
+User requested flatter planted feet: new planar soles and broader overlapping
+sabaton plates, with contact faces at the source's z=0.03 bind-pose height.
+16,544 triangles, no new IK or animation clips. Real chain links are NOT exported;
+a normal bake supplies a restrained diffuse detail contribution in mail regions.
+All mip alpha blocks and the team MRK remain exact. Runtime/animation/army-scale
+performance are UNVERIFIED. Install via Install-RealismGameTest.ps1 with the NEW
+BM_Paladin_Realism_GameTest_01.zip, never the static Paladin_RealismStudy_01.zip.
+Do not send the user back to MasterCandidate when they ask to test RealismStudy.
