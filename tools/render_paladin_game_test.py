@@ -8,10 +8,18 @@ from mathutils import Vector
 from build_paladin_geometry import parse
 
 ap=argparse.ArgumentParser();ap.add_argument('study',type=Path);ap.add_argument('package',type=Path)
-ap.add_argument('previous',type=Path);ap.add_argument('--only',choices=['before-studio','after-studio','feet-before-studio','feet-after-studio']);a=ap.parse_args();root=a.package.resolve()
+ap.add_argument('previous',type=Path);ap.add_argument('--only',choices=['before-studio','after-studio','feet-before-studio','feet-after-studio'])
+ap.add_argument('--view',choices=['front','rear','rear-detail'],default='front');a=ap.parse_args();root=a.package.resolve()
 bpy.ops.wm.open_mainfile(filepath=str(a.study.resolve()),use_scripts=False)
 scene=bpy.context.scene;scene.cycles.samples=32;scene.render.threads_mode='FIXED';scene.render.threads=12
 scene.render.resolution_x=1100;scene.render.resolution_y=1100
+prefix='' if a.view=='front' else a.view+'-'
+if a.view!='front':
+    cam=scene.camera
+    cam.location=(2.1,4.1,2.1) if a.view=='rear-detail' else (3.4,5.3,2.65)
+    target=Vector((-.02,0,1.35)) if a.view=='rear-detail' else Vector((-.25,0,1.02))
+    cam.rotation_euler=(target-cam.location).to_track_quat('-Z','Y').to_euler()
+    cam.data.ortho_scale=1.70 if a.view=='rear-detail' else 3.05
 for obj in bpy.data.objects:
     if obj.type=='MESH':obj.hide_render=True
 floor=bpy.data.objects['Studio floor'];floor.hide_render=False;floor.location.z=.003
@@ -42,10 +50,11 @@ previous=load('Study geometry base',a.previous/'payload/data/models/units/humans
 for name,group in [('before-studio',original),('after-studio',after)]:
     if a.only and name!=a.only:continue
     for o in group:o.hide_render=False
-    scene.render.filepath=str(root/(name+'.png'));bpy.ops.render.render(write_still=True)
+    scene.render.filepath=str(root/(prefix+name+'.png'));bpy.ops.render.render(write_still=True)
     for o in group:o.hide_render=True
 cam=scene.camera;cam.location=(-1.65,-2.15,.93);target=Vector((-.065,-.04,.07));cam.rotation_euler=(target-cam.location).to_track_quat('-Z','Y').to_euler();cam.data.ortho_scale=1.18
 for name,group in [('feet-before-studio',previous),('feet-after-studio',after)]:
+    if a.view!='front':continue
     if a.only and name!=a.only:continue
     for o in group:o.hide_render=False
     scene.render.filepath=str(root/(name+'.png'));bpy.ops.render.render(write_still=True)

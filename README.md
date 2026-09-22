@@ -79,7 +79,7 @@ A disk/copy failure may need manual recovery using the exact partial package's
 `Use-ComparisonBuild.ps1 -Mode Remove`; rollback is not automatic. Start a NEW
 Chapter 1 / Final Examination. Existing saves do not rerun the comparison spawn.
 
-## Current Realism runtime test
+## Realism runtime tests
 
 GameTest 01 produced a `VB LOCK` assertion on the user's Windows machine.
 GameTest 02 reduces only the After SAM geometry; textures, masks, mission and
@@ -91,3 +91,10 @@ The file picker selects the ZIP; its SHA-256 is checked before installation.
 The script saves the existing crash log before launching and creates one
 diagnostic ZIP under workspace/reports with before/after logs and hashes.
 Use Abort on an assertion: Retry invokes debugging, not a model-loading retry.
+
+Current package is `BM_Paladin_Realism_GameTest_03.zip`, installed through
+`scripts/Install-RealismGameTest03.ps1`. It addresses shoulder mail protruding
+through the pauldrons in the user's new-model comparison. Counts stay at 5,952
+triangles, with unchanged textures and animation data. The installer preserves
+the same before/after diagnostics. Check both shoulders from behind during
+walking and attacking; the correction is not yet runtime-confirmed.

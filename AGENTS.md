@@ -85,3 +85,20 @@ pre-launch mages.log and installed hashes, then after-run evidence, into one pri
 diagnostic ZIP. On assertion choose Abort, not Retry/Ignore. Do not advise driver
 changes solely from the assertion's generic text. v6 is still the latest build
 with user-confirmed runtime loading. Do not claim a fix until a Windows retest.
+
+## Shoulder clearance correction (latest)
+
+After GameTest 02 delivery, user supplied an in-game old/new comparison and
+reported mail shoulders poking through pauldrons. This supports new-model loading;
+the exact installed SAM hash was not supplied. Do not infer exhaustive runtime
+success or the exact VB LOCK cause from that screenshot.
+
+GameTest 03 is the current test package: same 5,328 vertices / 5,952 triangles.
+Restore pauldron coverage lost during fairing and retract the nearby upper sleeve
+toward the original surface. Only vertex positions and local normals change:
+all indices, UVs, weights, bone/animation sections and textures remain exact.
+Feet, helmet, sword and shield are byte-identical to 02. Use
+Install-RealismGameTest03.ps1 with BM_Paladin_Realism_GameTest_03.zip.
+Include a matched rear-detail 02/03 comparison as well as original/new full-model
+and texture previews. Static overlap checks improve but are not an animation
+clearance guarantee. User needs to check rear shoulders while walking/attacking.

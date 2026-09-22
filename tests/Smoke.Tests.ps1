@@ -141,37 +141,39 @@ try {
     $diagnosticFiles = @(Get-BMSafeFiles (Join-Path $work 'reports/runtime-fixture'))
     Assert-True (@($diagnosticFiles | Where-Object { $_.Extension -match '^\.(exe|dds|sam|sav|gdp)$' }).Count -eq 0) 'Runtime diagnostics copied private game binaries.'
 
-    # Exercise the new complete ZIP installer without executing a synthetic game.
-    $runtimePackage = Join-Path $sandbox 'runtime-package'
-    Copy-Item -LiteralPath $incoming -Destination $runtimePackage -Recurse
-    $runtimeManifest = Get-Content -LiteralPath (Join-Path $runtimePackage 'manifest.json') -Raw | ConvertFrom-Json
-    $runtimeManifest.build = 'cm1-comparison-paladin-realism-game-02'
-    Write-BMJson $runtimeManifest (Join-Path $runtimePackage 'manifest.json')
-    $runtimeZip = Join-Path $sandbox 'runtime-fixture.zip'
-    [IO.Compression.ZipFile]::CreateFromDirectory($runtimePackage, $runtimeZip)
-    $runtimeInstaller = Join-Path $caseRepo 'scripts/Install-RealismGameTest02.ps1'
-    $installerText = Get-Content -LiteralPath $runtimeInstaller -Raw
-    $fixtureHash = (Get-FileHash -LiteralPath $runtimeZip -Algorithm SHA256).Hash
-    # Replace the production archive pin only inside this temporary test checkout.
-    $installerText = [regex]::Replace($installerText, "(?m)^\`$expectedHash = '[^']+'", ("`$expectedHash = '" + $fixtureHash + "'"))
-    [IO.File]::WriteAllText($runtimeInstaller, $installerText)
-    & $installer -PackagePath $previous
-    $badZip = Join-Path $sandbox 'wrong.zip'
-    [IO.File]::WriteAllText($badZip, 'Wrong archive')
-    Assert-Throws { & $runtimeInstaller -ZipPath $badZip -NoLaunch } 'Wrong ZIP must be refused.'
-    Assert-True ((Get-FileHash -LiteralPath $installed -Algorithm SHA256).Hash -eq $originalFixtureHash) 'Rejected ZIP changed the working comparison.'
-    & $runtimeInstaller -ZipPath $runtimeZip -NoLaunch
-    $runtimeReceipt = Get-Content -LiteralPath (Join-Path $work 'comparison-installed.json') -Raw | ConvertFrom-Json
-    Assert-True ($runtimeReceipt.build -eq 'cm1-comparison-paladin-realism-game-02') 'New installer did not record the expected build.'
-    $runtimeReports = @(Get-ChildItem -LiteralPath (Join-Path $work 'reports') -Filter 'realism-02-*.zip' -File)
-    Assert-True ($runtimeReports.Count -eq 1) 'Expected one combined runtime report.'
-    $reportZip = [IO.Compression.ZipFile]::OpenRead($runtimeReports[0].FullName)
-    try {
-        $reportNames = @($reportZip.Entries | ForEach-Object { $_.FullName.Replace('\','/') })
-        Assert-True ($reportNames -contains 'before/mages.log' -and $reportNames -contains 'after/comparison-installed.json') 'Before/after evidence missing.'
-    } finally { $reportZip.Dispose() }
-    & $installer -PackagePath $runtimePackage -Mode Remove
-    Assert-True (@(Compare-BMInventory $before @(Get-BMInventory $source)).Count -eq 0) 'Runtime installer changed source files.'
+    foreach ($buildVersion in @('02', '03')) {
+        # Exercise the new complete ZIP installer without executing a synthetic game.
+        $runtimePackage = Join-Path $sandbox ('runtime-package-' + $buildVersion)
+        Copy-Item -LiteralPath $incoming -Destination $runtimePackage -Recurse
+        $runtimeManifest = Get-Content -LiteralPath (Join-Path $runtimePackage 'manifest.json') -Raw | ConvertFrom-Json
+        $runtimeManifest.build = ('cm1-comparison-paladin-realism-game-' + $buildVersion)
+        Write-BMJson $runtimeManifest (Join-Path $runtimePackage 'manifest.json')
+        $runtimeZip = Join-Path $sandbox ('runtime-fixture-' + $buildVersion + '.zip')
+        [IO.Compression.ZipFile]::CreateFromDirectory($runtimePackage, $runtimeZip)
+        $runtimeInstaller = Join-Path $caseRepo ('scripts/Install-RealismGameTest' + $buildVersion + '.ps1')
+        $installerText = Get-Content -LiteralPath $runtimeInstaller -Raw
+        $fixtureHash = (Get-FileHash -LiteralPath $runtimeZip -Algorithm SHA256).Hash
+        # Replace the production archive pin only inside this temporary test checkout.
+        $installerText = [regex]::Replace($installerText, "(?m)^\`$expectedHash = '[^']+'", ("`$expectedHash = '" + $fixtureHash + "'"))
+        [IO.File]::WriteAllText($runtimeInstaller, $installerText)
+        & $installer -PackagePath $previous
+        $badZip = Join-Path $sandbox ('wrong-' + $buildVersion + '.zip')
+        [IO.File]::WriteAllText($badZip, 'Wrong archive')
+        Assert-Throws { & $runtimeInstaller -ZipPath $badZip -NoLaunch } 'Wrong ZIP must be refused.'
+        Assert-True ((Get-FileHash -LiteralPath $installed -Algorithm SHA256).Hash -eq $originalFixtureHash) 'Rejected ZIP changed the working comparison.'
+        & $runtimeInstaller -ZipPath $runtimeZip -NoLaunch
+        $runtimeReceipt = Get-Content -LiteralPath (Join-Path $work 'comparison-installed.json') -Raw | ConvertFrom-Json
+        Assert-True ($runtimeReceipt.build -eq ('cm1-comparison-paladin-realism-game-' + $buildVersion)) 'New installer did not record the expected build.'
+        $runtimeReports = @(Get-ChildItem -LiteralPath (Join-Path $work 'reports') -Filter ('realism-' + $buildVersion + '-*.zip') -File)
+        Assert-True ($runtimeReports.Count -eq 1) 'Expected one combined runtime report.'
+        $reportZip = [IO.Compression.ZipFile]::OpenRead($runtimeReports[0].FullName)
+        try {
+            $reportNames = @($reportZip.Entries | ForEach-Object { $_.FullName.Replace('\','/') })
+            Assert-True ($reportNames -contains 'before/mages.log' -and $reportNames -contains 'after/comparison-installed.json') 'Before/after evidence missing.'
+        } finally { $reportZip.Dispose() }
+        & $installer -PackagePath $runtimePackage -Mode Remove
+        Assert-True (@(Compare-BMInventory $before @(Get-BMInventory $source)).Count -eq 0) 'Runtime installer changed source files.'
+    }
 
     # Editing the test copy must not change the source: detects accidental hardlinks.
     [IO.File]::WriteAllText((Join-Path $config.testGamePath $packRelative),'MODIFIED TEST COPY')

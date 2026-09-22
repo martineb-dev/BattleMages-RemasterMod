@@ -267,3 +267,38 @@ non-geometry chunks and all other payload files. PowerShell parser and smoke
 suite passed, including wrong-ZIP refusal, preserving existing crash evidence,
 checked build switching and byte-identical source installation. Studio previews
 render the actual SAM under fixed lighting; they are not in-game proof.
+
+## 2026-09-22 — shoulder clipping feedback and GameTest 03
+
+User supplied screenshot 57d62139-b629-4e1f-b9d0-d468622b3c4f.png after GameTest 02
+and reported the new mail shoulder penetrating its pauldron from the rear.
+The old/new models visibly load in that screenshot; no installed SAM hash/log
+was supplied, and this is not an exhaustive animation/performance acceptance.
+
+Inspection of source geometry found that study smoothing pulled the pauldron
+rim inward while curved body refinement expanded the sleeve. GameTest 03 uses
+`tools/fit_paladin_shoulders.py` to restore each pauldron's original extent plus
+0.12/0.12/0.10 game-unit XYZ clearance and to retract 137 nearby sleeve vertices
+toward the original body surface with a smooth falloff. Recalculates normals
+only on 229 adjacent body vertices. Pauldron normals use the inverse transpose
+of the coverage transform. Does not alter attachment bones, weights or clips.
+
+Counts remain exactly 5,328 vertices / 5,952 triangles. Topology, UV coordinates
+and weights remain byte-identical; helmet, sword and shield part bytes are
+unchanged. Foot/lower-leg vertex records below z=2.2 are unchanged, including
+normals. All non-geometry sections and all payload files other than After SAM
+are exact copies of 02. Output SAM SHA256:
+`12ee3bf0f2fc6508414e2ad9712e701a26e4d79a0a12875b74dbb5a6bb367e83`.
+
+Static BVH overlap pairs drop from 71/54 to 30/25 for the two pauldrons. This is
+an improvement diagnostic in the source pose, NOT zero-intersection proof or
+verification of actual clip frames. Original game meshes also overlap at some
+inner borders. Rear studio closeups use the actual 02 and 03 SAMs with identical
+materials, pose, camera and lights. Original/03 full view and texture comparison
+are also included. No claim that studio lighting is the legacy engine rendering.
+
+Install through `Install-RealismGameTest03.ps1`: same checked build switch,
+original-source baseline, ZIP pin and before/after diagnostics as 02. Windows
+retargeting is not required; user should inspect rear shoulders in idle, walking
+and attack poses. Full game runtime clearance remains pending. Local geometry
+checks and PowerShell parser/smoke gates cover both versioned launchers.
