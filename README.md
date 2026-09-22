@@ -78,3 +78,16 @@ command with the older package path. Local edits are preserved by refusing to sw
 A disk/copy failure may need manual recovery using the exact partial package's
 `Use-ComparisonBuild.ps1 -Mode Remove`; rollback is not automatic. Start a NEW
 Chapter 1 / Final Examination. Existing saves do not rerun the comparison spawn.
+
+## Current Realism runtime test
+
+GameTest 01 produced a `VB LOCK` assertion on the user's Windows machine.
+GameTest 02 reduces only the After SAM geometry; textures, masks, mission and
+animation sections are unchanged. Its runtime result is not yet known.
+Download the private `BM_Paladin_Realism_GameTest_02.zip` delivered with the test,
+close the game and error dialogs, and use `scripts/Install-RealismGameTest02.ps1`
+with Windows PowerShell `-NoProfile -STA -ExecutionPolicy RemoteSigned`.
+The file picker selects the ZIP; its SHA-256 is checked before installation.
+The script saves the existing crash log before launching and creates one
+diagnostic ZIP under workspace/reports with before/after logs and hashes.
+Use Abort on an assertion: Retry invokes debugging, not a model-loading retry.

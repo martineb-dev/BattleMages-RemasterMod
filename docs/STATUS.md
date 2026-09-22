@@ -1,4 +1,4 @@
-# Status — 2026-09-21
+# Status — 2026-09-22
 
 Current work: docs/ROADMAP.md. Earlier sections below are chronological history;
 the latest runtime/topology entries supersede their pending statements.
@@ -218,3 +218,52 @@ vertices, DDS decode/alpha preservation, and exact preservation of other payload
 PowerShell parser and smoke suite passed on Linux pwsh. Previews are renders of
 the delivered SAM/DDS under matched diffuse studio conditions, NOT engine captures.
 Windows load/movement/attack/death, foot placement and performance remain pending.
+
+## 2026-09-22 — Realism GameTest 01 assertion; GameTest 02 candidate
+
+User reports the Windows C++ assertion `WE HAVE A PROBLEM WITH VB LOCK!!! LET'S
+TRY USE NEW VIDEO DRIVERS`. Choosing Retry then displayed unhandled exception
+0x80000003. This is a FAILED runtime checkpoint, not a normal exit-code-1 case.
+No crash log or HRESULT has yet been received. Retry invokes the debugger:
+https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/assert-macro-assert-wassert
+The message alone does not establish a driver problem or a particular engine limit.
+
+Comparison of actual SAM records:
+
+| Build | Vertices | Triangles | Weighted body vertices | Runtime evidence |
+| --- | ---: | ---: | ---: | --- |
+| v6 equipment | 7395 | 9278 | 726 | User confirmed loading |
+| Realism GameTest 01 | 11169 | 16544 | 5179 | VB LOCK assertion |
+| Realism GameTest 02 | 5328 | 5952 | 1985 | Not yet tested in Windows |
+
+`tools/optimize_paladin_runtime.py` consumes only the pinned GameTest 01 SAM.
+It simplifies six parts using Blender's collapse modifier and interpolated
+original skin groups. Retains at most four normalized influences on existing
+bones. All 792 original foot triangles, their positions, UVs and skin weights
+are retained exactly; sole height remains z=0.03 in the static source pose.
+No new animations or IK. Other surfaces change topology and some positions/UVs;
+this is a conservative test candidate, not the final art master or an LOD chain.
+Maximum new-body vertex distance to the old surface is 0.11636 game units.
+
+Only bmafter.sam changes in the deployed payload relative to GameTest 01.
+DDS, all alpha/mips, MRK, Before, troop/mission definitions and non-geometry SAM
+sections remain byte-identical. Output SAM SHA256:
+`afc2ef95d9a1b534e9b5294f990778b2bc6041f02972fc7dd807707fcdc5947b`.
+The limits enforced by this exporter are experimental budgets, NOT documented
+engine capacities. A successful retest would support the geometry-complexity
+hypothesis but would not by itself identify the exact failing allocation.
+
+`Install-RealismGameTest02.ps1` pins the new ZIP, saves the previous crash log
+and receipt before replacing a build, switches through the existing checked
+installer, and preserves after-run logs plus hashes in one diagnostic ZIP.
+It never copies executable, asset or save bytes into diagnostics. Prior package
+folders remain available as rollback inputs. Original source baseline checked
+before and after. Normal exit code alone does not decide runtime success.
+If an assertion recurs, Abort and upload the printed diagnostic ZIP.
+
+Local checks: SAM binary roundtrip, finite/indexed geometry, nonzero triangle
+areas, winding/normals, valid bone influences, exact foot preservation, unchanged
+non-geometry chunks and all other payload files. PowerShell parser and smoke
+suite passed, including wrong-ZIP refusal, preserving existing crash evidence,
+checked build switching and byte-identical source installation. Studio previews
+render the actual SAM under fixed lighting; they are not in-game proof.

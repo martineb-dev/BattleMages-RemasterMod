@@ -65,7 +65,23 @@ User requested flatter planted feet: new planar soles and broader overlapping
 sabaton plates, with contact faces at the source's z=0.03 bind-pose height.
 16,544 triangles, no new IK or animation clips. Real chain links are NOT exported;
 a normal bake supplies a restrained diffuse detail contribution in mail regions.
-All mip alpha blocks and the team MRK remain exact. Runtime/animation/army-scale
-performance are UNVERIFIED. Install via Install-RealismGameTest.ps1 with the NEW
+All mip alpha blocks and the team MRK remain exact. GameTest 01 FAILED on the user's
+Windows machine with a VB LOCK assertion on 2026-09-22; Retry then caused an
+unhandled exception 0x80000003. Do not treat it as a working runtime checkpoint.
+The historical installer is Install-RealismGameTest.ps1 with the private
 BM_Paladin_Realism_GameTest_01.zip, never the static Paladin_RealismStudy_01.zip.
 Do not send the user back to MasterCandidate when they ask to test RealismStudy.
+
+## VB LOCK investigation (current)
+
+Realism GameTest 02 is a geometry-only conservative test: 5,328 vertices / 5,952
+triangles, weighted body 1,985 vertices (01 had 11,169 / 16,544, body 5,179).
+Original foot triangles/positions/UV/weights are retained exactly. Other surfaces
+are simplified with interpolated skin groups. DDS/MRK, Before, mission, skeleton
+and clips stay byte-identical to 01. The 2,048 body-vertex test budget is NOT a
+discovered engine limit. Exact assertion cause remains unknown; runtime is pending.
+Use Install-RealismGameTest02.ps1 and BM_Paladin_Realism_GameTest_02.zip. This saves
+pre-launch mages.log and installed hashes, then after-run evidence, into one private
+diagnostic ZIP. On assertion choose Abort, not Retry/Ignore. Do not advise driver
+changes solely from the assertion's generic text. v6 is still the latest build
+with user-confirmed runtime loading. Do not claim a fix until a Windows retest.
